@@ -1,26 +1,35 @@
-#include "analyzer.h"
+#pragma once
+#include <string>
+#include <vector>
+#include <unordered_map>
+#include <array>
 
-// Students may use ANY data structure internally
+struct ZoneCount {
+    std::string zone;
+    long long count;
+};
 
-void TripAnalyzer::ingestFile(const std::string& csvPath) {
-    // TODO:
-    // - open file
-    // - skip header
-    // - skip malformed rows
-    // - extract PickupZoneID and pickup hour
-    // - aggregate counts
-}
+struct SlotCount {
+    std::string zone;
+    int hour;
+    long long count;
+};
 
-std::vector<ZoneCount> TripAnalyzer::topZones(int k) const {
-    // TODO:
-    // - sort by count desc, zone asc
-    // - return first k
-    return {};
-}
+class TripAnalyzer {
+public:
 
-std::vector<SlotCount> TripAnalyzer::topBusySlots(int k) const {
-    // TODO:
-    // - sort by count desc, zone asc, hour asc
-    // - return first k
-    return {};
-}
+    void ingestFile(const std::string& csvPath);
+
+
+    std::vector<ZoneCount> topZones(int k = 10) const;
+
+
+    std::vector<SlotCount> topBusySlots(int k = 10) const;
+
+private:
+
+    std::unordered_map<std::string, long long> m_zoneCounts;
+
+    std::unordered_map<std::string, std::array<long long, 24>> m_zoneHourlyCounts;
+};
+
